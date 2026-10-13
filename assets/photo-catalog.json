@@ -1,0 +1,47 @@
+[
+  {
+    "file": "assets/work/night-structure.jpg",
+    "original_filename": "20230825_040451.jpg",
+    "source": "user_upload",
+    "title": "야간 구조물 현장",
+    "region": null,
+    "equipment_class": null,
+    "sha256": "3067daa72ad777cf81f7d1ddd290abcf6d284f64466a6ba0b632f8cb86b61fce"
+  },
+  {
+    "file": "assets/work/building-exterior.jpg",
+    "original_filename": "20260918_105654.jpg",
+    "source": "user_upload",
+    "title": "건물 외벽 현장",
+    "region": null,
+    "equipment_class": null,
+    "sha256": "48bccafda7bf79c2621ca43ba838ab95343e8d659c7f4aba864d925c01c60766"
+  },
+  {
+    "file": "assets/work/garden-access.jpg",
+    "original_filename": "20260916_080527.jpg",
+    "source": "user_upload",
+    "title": "수목 주변 진입로 현장",
+    "region": null,
+    "equipment_class": null,
+    "sha256": "f669b671932b592949bd210f0c35203b8e6e6284ec200f120edd637374ac861d"
+  },
+  {
+    "file": "assets/work/roadside-work.jpg",
+    "original_filename": "20260907_153506.jpg",
+    "source": "user_upload",
+    "title": "도로변 고소작업 현장",
+    "region": null,
+    "equipment_class": null,
+    "sha256": "205cb992390e4bbad55547d6c124511cb1549083e2887c2f1d9484702c99e0e4"
+  },
+  {
+    "file": "assets/work/roadside-truck.jpg",
+    "original_filename": "20260907_150659.jpg",
+    "source": "user_upload",
+    "title": "도로변 장비 배치",
+    "region": null,
+    "equipment_class": null,
+    "sha256": "338f8e59c9ac9a9599eee1ccaab85d2d2b33be5a234eb2fb251367b7e807ffdd"
+  }
+]
