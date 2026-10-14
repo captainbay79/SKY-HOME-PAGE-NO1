@@ -41,6 +41,13 @@ files=[ROOT/'index.html',ROOT/'regions/index.html']+[ROOT/r['page'] for r in man
 for i,p in enumerate(files):
     html=p.read_text(encoding='utf-8')
     page=Inspector(); page.feed(html)
+    if 'class="service-band"' in html:
+        if html.count('class="service-equipment-link"') != 1:
+            errors.append(f'{p.name}: missing equipment navigation at consultation end')
+        if 'hero-equipment-link' in html or 'class="service-call"' in html:
+            errors.append(f'{p.name}: old consultation navigation remains')
+        if 'styles.css?v=service-soft5' not in html:
+            errors.append(f'{p.name}: outdated consultation stylesheet')
     if html.count('class="wrap business-info"')!=1: errors.append(f'{p.name}: missing or repeated business details')
     for value in ['417-16-27305','mailto:skyhi0482@gmail.com','카드결제시 사전요청, VAT별도','<dt>상호</dt><dd>스카이차</dd>']:
         if value not in html: errors.append(f'{p.name}: missing footer value {value}')

@@ -26,7 +26,7 @@ def apply_main_design(html, row):
     introduction = re.search(r'<p class="hero-description hero-introduction">.*?</p>', main, re.S)[0]
     actions = re.search(r'<div class="hero-actions">.*?</div>', main, re.S)[0]
     tags = re.search(r'<div class="hero-tags">.*?</div>', main, re.S)[0]
-    hero = f'<section class="regional-hero hero regional-main-hero"><div class="wrap"><div>{heading}{introduction}{summary}{actions}{tags}<a class="hero-secondary hero-equipment-link" href="#equipment">장비 먼저 살펴보기 <span>↓</span></a></div>{thumbnail}</div></section>'
+    hero = f'<section class="regional-hero hero regional-main-hero"><div class="wrap"><div>{heading}{introduction}{summary}{actions}{tags}</div>{thumbnail}</div></section>'
     html = html[:old_hero.start()] + hero + html[old_hero.end():]
     band = re.search(r'<section class="service-band".*?</section>', main, re.S)[0]
     common = band + section(main, 'equipment') + section(main, 'services')
@@ -44,7 +44,8 @@ def apply_main_design(html, row):
     html = html.replace('href="../styles.css"', 'href="../styles.css?v=regional-main3"')
     html = html.replace('href="../region.css"', 'href="../region.css?v=regional-main3"')
     html = html.replace('<script src="../region.js" defer></script>', '<script src="../region.js" defer></script><script src="../equipment.js?v=regional-main3" defer></script>')
-    return html.replace('?v=regional-main3', '?v=regional-refinement4')
+    html = html.replace('?v=regional-main3', '?v=regional-refinement4')
+    return html.replace('styles.css?v=regional-refinement4', 'styles.css?v=service-soft5')
 
 def update_existing():
     import json

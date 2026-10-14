@@ -47,3 +47,19 @@
 footer .business-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 36px;padding-top:28px;margin-top:28px;border-top:1px solid #ffffff26;font-size:14px;line-height:1.7}
 footer .business-info>div{display:flex;align-items:baseline;gap:12px;min-width:0}footer .business-info dt{color:#a9afaf;font-size:12px;flex-shrink:0}footer .business-info dd{margin:0;color:#fff;font-size:14px;font-weight:600}footer .business-info a{font-size:14px!important;overflow-wrap:anywhere}footer .business-info a:hover{color:var(--orange)}
 @media(max-width:760px){footer .business-info{grid-template-columns:1fr;gap:12px}footer .business-info dt{min-width:96px}}
+
+/* Approved consultation band: soft background and equipment navigation */
+
+.service-band{background:#f5f5f1;color:#171a1b;padding:40px 0 30px;border-bottom:1px solid #deded7}
+.service-kicker{color:#666a68;font-size:13px;letter-spacing:0}
+.service-band h2{font-size:clamp(26px,3.3vw,40px);margin-bottom:28px}
+.service-benefits article{border-color:#dddfda;padding-top:20px}
+.service-symbol{background:#fff0e5;color:#e8510a;width:40px;height:40px}
+.service-benefits h3{font-size:20px}
+.service-benefits p{color:#505653;font-size:15px;line-height:1.75}
+.service-equipment-link{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-top:1px solid #161a1b55;margin-top:25px;padding:20px 0 0;font-size:21px;font-weight:900;letter-spacing:-.5px;line-height:1.5}
+.service-equipment-link .equipment-down-arrow{font-size:36px;line-height:1.15;font-weight:700;color:#e8510a}
+.service-equipment-link:hover{color:#e8510a}.service-equipment-link:focus-visible{outline-color:#171a1b}
+@media(max-width:760px){.service-band{padding:30px 0 25px}.service-band h2{font-size:27px;line-height:1.4}.service-benefits{gap:18px}.service-benefits article{padding-top:18px}}
+@media(max-width:480px){.service-equipment-link{font-size:19px}.service-band h2{font-size:25px}.service-benefits h3{font-size:19px}.service-benefits p{font-size:14px}}
+
