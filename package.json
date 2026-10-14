@@ -1,0 +1,11 @@
+{
+  "name": "kidari-sky-home-page-no1",
+  "private": true,
+  "scripts": {
+    "build": "python tools/build_deploy.py",
+    "deploy": "wrangler deploy"
+  },
+	"devDependencies": {
+		"wrangler": "^4.150.0"
+	}
+}
