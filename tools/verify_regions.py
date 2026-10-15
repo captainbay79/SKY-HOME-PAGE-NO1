@@ -42,11 +42,13 @@ for i,p in enumerate(files):
     html=p.read_text(encoding='utf-8')
     page=Inspector(); page.feed(html)
     if 'class="service-band"' in html:
+        if html.count('class="hero-tags hero-proof"')!=1 or html.count('hero-consult-subtle')!=1:
+            errors.append(f'{p.name}: missing approved hero controls')
         if html.count('class="service-equipment-link"') != 1:
             errors.append(f'{p.name}: missing equipment navigation at consultation end')
         if 'hero-equipment-link' in html or 'class="service-call"' in html:
             errors.append(f'{p.name}: old consultation navigation remains')
-        if 'styles.css?v=service-soft5' not in html:
+        if 'styles.css?v=hero-proof6' not in html:
             errors.append(f'{p.name}: outdated consultation stylesheet')
     if html.count('class="wrap business-info"')!=1: errors.append(f'{p.name}: missing or repeated business details')
     for value in ['417-16-27305','mailto:skyhi0482@gmail.com','카드결제시 사전요청, VAT별도','<dt>상호</dt><dd>스카이차</dd>']:
@@ -70,12 +72,15 @@ for i,p in enumerate(files):
 
 main_html=(ROOT/'index.html').read_text(encoding='utf-8')
 main_field=re.search(r'<section id="field".*?</section>',main_html,re.S)[0]
-if main_field.count('class="field-grid"')!=1 or main_field.count('<figure>')!=8:
+if main_field.count('class="field-grid"')!=1 or len(re.findall(r'<figure(?: [^>]*)?>',main_field))!=8:
     errors.append('Main page: expected one continuous eight-photo gallery')
 captions=json.loads((ROOT/'assets/photo-captions.json').read_text(encoding='utf-8'))
 gallery_plan_path=ROOT/'assets/region-gallery-assignments.json'
 gallery_plan=json.loads(gallery_plan_path.read_text(encoding='utf-8')) if gallery_plan_path.exists() else None
 gallery_sets=set()
+shared_path=ROOT/'assets/region-name-groups.json'
+shared=json.loads(shared_path.read_text(encoding='utf-8')) if shared_path.exists() else {'groups':[],'by_code':{}}
+gallery_owners={}
 for row in manifest:
     if not (ROOT/row['thumbnail']).is_file(): errors.append(f'{row["code"]}: missing thumbnail')
     html=(ROOT/row['page']).read_text(encoding='utf-8')
@@ -88,7 +93,9 @@ for row in manifest:
         expected=['../assets/watermarked/gallery/'+Path(source).name for source in gallery_plan[row['code']]]
         if gallery_files!=expected or len(set(gallery_files))!=8: errors.append(f'{row["code"]}: incorrect eight-photo gallery')
         key=tuple(sorted(gallery_files))
-        if key in gallery_sets: errors.append(f'{row["code"]}: repeated gallery combination')
+        owner=shared['by_code'].get(row['code'],row['code'])
+        if key in gallery_sets and gallery_owners[key]!=owner: errors.append(f'{row["code"]}: repeated gallery combination outside shared-name group')
+        gallery_owners[key]=owner
         gallery_sets.add(key)
         if html.count('<span class="equipment-number">')!=4: errors.append(f'{row["code"]}: missing number styling')
         expected_titles=[escape(captions[source]['title']) for source in gallery_plan[row['code']]]
@@ -106,8 +113,17 @@ if (ROOT/'assets/thumbnail-photo-catalog.json').exists():
     grouped={}
     for row in rows: grouped.setdefault(row[2],[]).append(row[0])
     for parent,codes in grouped.items():
-        assignments=[hashes[mappings[code]['thumbnail_photo']] for code in codes]
+        assignments=[hashes[mappings[code]['thumbnail_photo']] for code in codes if code not in shared['by_code']]
         if len(set(assignments))!=len(assignments): errors.append(f'{parent}: repeated sibling photos')
+for group in shared['groups']:
+    canonical=group['canonical']
+    original=(ROOT/f'regions/{canonical}.html').read_text(encoding='utf-8')
+    body=original.split('<body>',1)[1]
+    for code in group['codes']:
+        source=(ROOT/f'regions/{code}.html').read_text(encoding='utf-8')
+        if source.split('<body>',1)[1]!=body: errors.append(f'{code}: shared-name content differs')
+        if f'href="{canonical}.html"' not in source: errors.append(f'{code}: shared canonical missing')
+        if (ROOT/f'assets/region-thumbnails/{code}.jpg').read_bytes()!=(ROOT/f'assets/region-thumbnails/{canonical}.jpg').read_bytes(): errors.append(f'{code}: shared thumbnail differs')
 if errors:
     print('\n'.join(errors[:30])); raise SystemExit(f'{len(errors)} failures')
 print(f'PASS: {len(files)} HTML pages, {len(manifest)} thumbnails, local links, H1, meta descriptions, image alt text, JSON-LD')

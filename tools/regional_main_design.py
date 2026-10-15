@@ -3,6 +3,7 @@ import re
 from html import escape
 from pathlib import Path
 from regional_gallery import gallery_section
+from hero_elements import HERO_TAGS, HERO_ACTIONS
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -24,8 +25,8 @@ def apply_main_design(html, row):
     heading = re.search(r'<h1 class="hero-message">.*?</h1>', main, re.S)[0]
     heading = heading.replace('>더 높은 곳은', f'><small>{full} 스카이차</small>더 높은 곳은', 1)
     introduction = re.search(r'<p class="hero-description hero-introduction">.*?</p>', main, re.S)[0]
-    actions = re.search(r'<div class="hero-actions">.*?</div>', main, re.S)[0]
-    tags = re.search(r'<div class="hero-tags">.*?</div>', main, re.S)[0]
+    actions = HERO_ACTIONS
+    tags = HERO_TAGS
     hero = f'<section class="regional-hero hero regional-main-hero"><div class="wrap"><div>{heading}{introduction}{summary}{actions}{tags}</div>{thumbnail}</div></section>'
     html = html[:old_hero.start()] + hero + html[old_hero.end():]
     band = re.search(r'<section class="service-band".*?</section>', main, re.S)[0]
@@ -45,7 +46,7 @@ def apply_main_design(html, row):
     html = html.replace('href="../region.css"', 'href="../region.css?v=regional-main3"')
     html = html.replace('<script src="../region.js" defer></script>', '<script src="../region.js" defer></script><script src="../equipment.js?v=regional-main3" defer></script>')
     html = html.replace('?v=regional-main3', '?v=regional-refinement4')
-    return html.replace('styles.css?v=regional-refinement4', 'styles.css?v=service-soft5')
+    return html.replace('styles.css?v=regional-refinement4', 'styles.css?v=hero-proof6')
 
 def update_existing():
     import json

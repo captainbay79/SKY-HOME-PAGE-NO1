@@ -161,6 +161,9 @@ def main():
     (ROOT/'robots.txt').write_text(robots,encoding='utf-8')
     dump(ROOT/'assets/region-build.json',{'page_count':len(rows),'thumbnail_count':len(rows),'indexable_pages':sum(r['indexable'] for r in manifest),'base_url':base or None,'photo_count':len(photos),'thumbnail_photo_count':len(thumbnail_photos),'thumbnail_design':'approved-heavier-region-all-text-black-outline-shadow','thumbnail_size':[800,600]})
     apply_site_watermarks()
+    if (ROOT/'assets/region-name-groups.json').exists():
+        from shared_region_names import apply_shared_names
+        apply_shared_names()
     print(f'Built {len(rows)} pages and JPG thumbnails; {sum(r["indexable"] for r in manifest)} regional directory pages indexable; production origin: {base or "not configured"}',flush=True)
 
 if __name__ == '__main__': main()

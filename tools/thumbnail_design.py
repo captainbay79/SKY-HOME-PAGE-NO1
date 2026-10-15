@@ -92,9 +92,17 @@ def font(size):
     return ImageFont.truetype(FONT,size)
 
 def region_label(row):
+    config = shared_name_codes()
+    if row[0] in config: return row[1]
     parts=row[3].split()
     if len(parts)<=2: return ' '.join([SHORT.get(parts[0],parts[0])]+parts[1:])
     return ' '.join(parts[-2:])
+
+@lru_cache(maxsize=1)
+def shared_name_codes():
+    import json
+    path=ROOT/'assets/region-name-groups.json'
+    return json.loads(path.read_text(encoding='utf-8'))['by_code'] if path.exists() else {}
 
 def region_text(label):
     # Final approved sample: one bold white region line in the original box,

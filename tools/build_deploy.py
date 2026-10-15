@@ -9,6 +9,9 @@ OUT=ROOT/'dist'
 ORIGIN='https://sky-home-page-no1.captainbay79.workers.dev'
 OUT.mkdir(exist_ok=True)
 files=['index.html','styles.css','script.js','equipment.js','region.css','region.js','robots.txt','_redirects','assets/regions.json','assets/favicon.svg']
+shared_path=ROOT/'assets/region-name-groups.json'
+shared_codes=json.loads(shared_path.read_text(encoding='utf-8'))['by_code'] if shared_path.exists() else {}
+if shared_path.exists(): files.append('assets/region-name-groups.json')
 files += [page.relative_to(ROOT).as_posix() for page in (ROOT/'regions').glob('*.html')]
 files += [image.relative_to(ROOT).as_posix() for image in (ROOT/'assets/region-thumbnails').glob('*.jpg')]
 files += [image.relative_to(ROOT).as_posix() for image in (ROOT/'assets/watermarked').rglob('*.jpg')]
@@ -25,10 +28,13 @@ for relative in files:
     if source.suffix=='.html':
         text=source.read_text(encoding='utf-8')
         path='/'+relative if relative!='index.html' else '/'
+        canonical_path=path
+        if relative.startswith('regions/') and Path(relative).stem in shared_codes:
+            canonical_path='/regions/'+shared_codes[Path(relative).stem]+'.html'
         text=re.sub(r'<link rel="canonical"[^>]*>|<meta property="og:url"[^>]*>','',text)
-        text=text.replace('</head>',f'<link rel="canonical" href="{ORIGIN}{path}"><meta property="og:url" content="{ORIGIN}{path}"></head>',1)
+        text=text.replace('</head>',f'<link rel="canonical" href="{ORIGIN}{canonical_path}"><meta property="og:url" content="{ORIGIN}{canonical_path}"></head>',1)
         text=re.sub(r'(<meta property="og:image" content=")(?:\.\./|/)?assets/',r'\1'+ORIGIN+'/assets/',text)
-        if relative.startswith('regions/') and relative!='regions/index.html' and 'content="index,follow' in text:
+        if relative.startswith('regions/') and relative!='regions/index.html' and canonical_path==path and 'content="index,follow' in text:
             sitemap.append(path)
         destination.write_text(text,encoding='utf-8')
     elif relative=='robots.txt':

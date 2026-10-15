@@ -63,3 +63,21 @@ footer .business-info>div{display:flex;align-items:baseline;gap:12px;min-width:0
 @media(max-width:760px){.service-band{padding:30px 0 25px}.service-band h2{font-size:27px;line-height:1.4}.service-benefits{gap:18px}.service-benefits article{padding-top:18px}}
 @media(max-width:480px){.service-equipment-link{font-size:19px}.service-band h2{font-size:25px}.service-benefits h3{font-size:19px}.service-benefits p{font-size:14px}}
 
+
+/* Approved hero controls: small phone CTA and separate payment row */
+
+.hero .hero-consult-subtle{display:inline-flex;justify-content:center;align-items:center;gap:14px;width:fit-content;min-width:240px;padding:22px 26px;border:0;border-radius:0;box-shadow:none}
+.hero-consult-subtle strong{font-size:17px;font-weight:800;line-height:1.4;white-space:nowrap}
+.hero-consult-subtle .subtle-phone-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;background:#111c23;border-radius:50%;color:white;flex-shrink:0}
+.hero-consult-subtle .subtle-phone-icon svg{width:17px;height:17px}
+.hero .hero-proof{display:flex;flex-direction:column;gap:12px;margin-top:28px;width:100%;max-width:600px}
+.hero-proof .proof-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.hero-proof .proof-item{display:flex;align-items:center;gap:10px;padding:18px 14px;background:#f4f3ed;color:#171a1b;border-left:4px solid #ff631f;border-radius:3px}
+.hero-proof .proof-item svg{width:25px;height:25px;flex-shrink:0;color:#df4900}
+.hero-proof strong{font-size:19px;font-weight:900;line-height:1.55;letter-spacing:-.7px}
+.hero-proof .proof-payment{display:flex;align-items:center;gap:14px;width:100%;padding:16px 20px;background:#101b23;border:2px solid #f4f3ed;border-radius:3px;color:white}
+.hero-proof .proof-payment svg{width:36px;height:28px;flex-shrink:0;color:#ff8b48}
+.hero-proof .proof-payment strong{font-size:20px}
+@media(max-width:480px){.hero-proof .proof-row{gap:9px}.hero-proof .proof-item{gap:7px;padding:14px 9px}.hero-proof strong{font-size:16px;letter-spacing:-.7px}.hero-proof .proof-item svg{width:20px;height:20px}.hero-proof .proof-payment{padding:14px 16px}.hero-proof .proof-payment strong{font-size:18px}}
+
+#main-field-05 img{aspect-ratio:4/3;object-fit:contain}
