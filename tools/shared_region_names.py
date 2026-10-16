@@ -28,13 +28,13 @@ def common_page(source, name, code, indexable):
     for key, value in [('name="description"', description), ('property="og:title"', title), ('property="og:description"', description)]:
         source = re.sub(r'<meta '+key+r'[^>]*>', '<meta '+key+' content="'+escape(value,quote=True)+'">', source, count=1)
     source = re.sub(r'<meta name="robots"[^>]*>', '<meta name="robots" content="'+('index,follow,max-image-preview:large' if indexable else 'noindex,follow')+'">', source, count=1)
-    source = re.sub(r'<meta property="og:image"[^>]*>', f'<meta property="og:image" content="../assets/region-thumbnails/{code}.jpg?v=shared-names1">', source, count=1)
+    source = re.sub(r'<meta property="og:image"[^>]*>', f'<meta property="og:image" content="../assets/region-thumbnails/{code}.jpg?v=square-approved1">', source, count=1)
     source = re.sub(r'<link rel="canonical"[^>]*>|<meta property="og:url"[^>]*>', '', source)
     source = source.replace('</head>', f'<link rel="canonical" href="{code}.html"></head>', 1)
     source = re.sub(r'<nav class="breadcrumb".*?</nav>', f'<nav class="breadcrumb" aria-label="현재 위치"><a href="../index.html">홈</a><span>/</span><a href="index.html">전국 지역</a><span>/</span><span aria-current="page">{label}</span></nav>', source, count=1, flags=re.S)
     source = re.sub(r'(<h1 class="hero-message"><small>).*?(</small>)', r'\g<1>'+label+r' 스카이차\2', source, count=1, flags=re.S)
     source = re.sub(r'<p class="summary">.*?</p>', '<p class="summary">'+escape(summary)+'</p>', source, count=1, flags=re.S)
-    source = re.sub(r'<figure><a href="tel:01047400482".*?</figure>', f'<figure><a href="tel:01047400482" aria-label="{label} 장비 전화 상담 {PHONE}"><img class="regional-thumbnail" src="../assets/region-thumbnails/{code}.jpg?v=shared-names1" alt="{label} 우리동네 스카이차 {PHONE}" width="800" height="600" fetchpriority="high"></a></figure>', source, count=1, flags=re.S)
+    source = re.sub(r'<figure><a href="tel:01047400482".*?</figure>', f'<figure><a href="tel:01047400482" aria-label="{label} 장비 전화 상담 {PHONE}"><img class="regional-thumbnail" src="../assets/region-thumbnails/{code}.jpg?v=square-approved1" alt="{label} 우리동네 스카이차 {PHONE}" width="1200" height="1200" fetchpriority="high"></a></figure>', source, count=1, flags=re.S)
     # A shared name has no single parent or local subdivision directory.
     address = f'<section class="section light shared-address"><div class="wrap"><p class="eyebrow">SITE ADDRESS</p><h2>{label} 현장 주소 확인</h2><div class="answer-box">현장 주소와 건물명, 차량이 들어갈 입구를 함께 알려주세요. 작업 높이와 진입로, 차량과 지지대를 설치할 공간을 확인해 장비와 가능한 일정을 안내합니다.</div><a class="region-back" href="tel:01047400482">현장 주소로 전화 상담하기 ↗</a></div></section>'
     source, count = re.subn(r'<section class="section light"><div class="wrap"><p class="eyebrow">(?:AREA DIRECTORY|SITE ADDRESS)</p>.*?</section>|<section class="section light shared-address">.*?</section>', address, source, count=1, flags=re.S)
@@ -113,12 +113,12 @@ def apply_shared_names():
         def replace(m):
             code = m['code']
             if code not in mapping: return m[0]
-            query = '?v=shared-names1' if m['suffix']=='.jpg' else (m['query'] or '')
+            query = '?v=square-approved1' if m['suffix']=='.jpg' else (m['query'] or '')
             return f'{m["attr"]}="{m["prefix"] or ""}{mapping[code]}{m["suffix"]}{query}{m["hash"] or ""}"'
         updated = pattern.sub(replace, source)
         updated = re.sub(r'alt="([^"]*)"', lambda m:'alt="'+alt_names.get(m[1],m[1])+'"',updated)
         if page.name=='index.html':
-            updated = re.sub(r'script\.js\?v=[^"<>]+', 'script.js?v=shared-names1', updated)
+            updated = re.sub(r'script\.js\?v=[^"<>]+', 'script.js?v=square-approved1', updated)
         if updated != source:
             page.write_text(updated,encoding='utf-8')
     (ROOT/'assets/region-pages.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')

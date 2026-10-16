@@ -1,6 +1,6 @@
 .breadcrumb{display:flex;flex-wrap:wrap;gap:9px;font-size:12px;color:var(--muted);padding:24px 0;line-height:1.8}.breadcrumb a:hover{color:var(--orange)}
 .regional-hero img,.regional-gallery img,.region-thumbnail img,.regional-links img{height:auto}
-.regional-hero img,.region-thumbnail img,.regional-links img{aspect-ratio:4/3!important;object-fit:contain}
+.regional-hero img,.region-thumbnail img,.regional-links img{aspect-ratio:1/1!important;object-fit:contain}
 .regional-hero figure>a{display:block}.regional-hero figure>a:focus-visible{outline:3px solid var(--orange);outline-offset:6px}
 .regional-hero{background:var(--ink);color:white}.regional-hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;padding:48px 0 64px}.regional-hero h1{font-size:clamp(32px,4vw,54px);letter-spacing:-2px;line-height:1.25}.regional-hero h1 span{display:block;color:var(--orange);margin-top:12px}.regional-hero .summary{font-size:15px;line-height:1.9;color:#cbd0ce;margin:22px 0 28px}.regional-hero .button{width:fit-content}.regional-hero img{width:100%;aspect-ratio:16/9;object-fit:cover}.regional-hero figcaption{color:#a9afaf;font-size:11px;line-height:1.8;margin-top:12px}
 .regional-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;background:#fff;padding:28px;margin-top:32px}.regional-facts dt{font-size:11px;color:var(--muted);margin-bottom:12px}.regional-facts dd{margin:0;font-size:16px;font-weight:bold;line-height:1.7}.regional-facts a{color:var(--orange)}

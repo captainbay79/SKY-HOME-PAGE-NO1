@@ -18,7 +18,7 @@ if new not in s:
     s=s.replace(old,'',1)
     tags='<div class="hero-tags"><span>당일배차 · 빠른배차 가능</span><span>1톤부터 대형 장비까지</span><span>카드결제 가능</span></div>'
     s=s.replace(tags,tags+new,1)
-s=re.sub(r'<h1(?: class="hero-message")?>.*?</h1>','<h1 class="hero-message">더 높은 곳은<br>더 안전하게.<em>고객의 안전을 최우선으로 생각합니다.</em></h1>',s,count=1)
+s=re.sub(r'<h1(?: class="hero-message")?>.*?</h1>','<h1 class="hero-message">더 높은 곳은<br>더 안전 하게.<em>고객의 안전을 최우선으로 생각합니다.</em></h1>',s,count=1)
 s=s.replace('<h2>높은 곳의 일.<br>현장부터 살펴봅니다.</h2>','<h2>높은 곳의 고소작업,<br>안전하게 현장부터<br>확인해야 합니다.</h2>')
 for ton,height in [(1,18),(2,23),(3,32),(5,45)]:
     old=f'<div class="equipment-visual" aria-label="대표 모델 최대 작업 높이 {height}미터"><span>WORKING HEIGHT</span><strong>{height}<small>m</small></strong><span>대표 모델 최대 높이</span></div>'

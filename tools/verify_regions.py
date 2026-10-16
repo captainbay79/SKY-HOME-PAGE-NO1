@@ -6,6 +6,7 @@ import json
 import re
 from functools import lru_cache
 from html import escape
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -48,7 +49,7 @@ for i,p in enumerate(files):
             errors.append(f'{p.name}: missing equipment navigation at consultation end')
         if 'hero-equipment-link' in html or 'class="service-call"' in html:
             errors.append(f'{p.name}: old consultation navigation remains')
-        if 'styles.css?v=hero-proof6' not in html:
+        if 'styles.css?v=square-approved1' not in html:
             errors.append(f'{p.name}: outdated consultation stylesheet')
     if html.count('class="wrap business-info"')!=1: errors.append(f'{p.name}: missing or repeated business details')
     for value in ['417-16-27305','mailto:skyhi0482@gmail.com','카드결제시 사전요청, VAT별도','<dt>상호</dt><dd>스카이차</dd>']:
@@ -83,9 +84,11 @@ shared=json.loads(shared_path.read_text(encoding='utf-8')) if shared_path.exists
 gallery_owners={}
 for row in manifest:
     if not (ROOT/row['thumbnail']).is_file(): errors.append(f'{row["code"]}: missing thumbnail')
+    with Image.open(ROOT/row['thumbnail']) as thumb:
+        if thumb.size!=(1200,1200): errors.append(f"{row['code']}: incorrect thumbnail pixel size")
     html=(ROOT/row['page']).read_text(encoding='utf-8')
     if 'class="regional-thumbnail"' not in html: errors.append(f'{row["code"]}: hero thumbnail missing')
-    if 'og:image:width" content="800"' not in html or 'og:image:height" content="600"' not in html:
+    if 'og:image:width" content="1200"' not in html or 'og:image:height" content="1200"' not in html:
         errors.append(f'{row["code"]}: incorrect OG image dimensions')
     if gallery_plan:
         field=re.search(r'<section id="field".*?</section>',html,re.S)

@@ -33,10 +33,10 @@ function renderRegions() {
     const targetCode = sharedRegionCodes[row[0]] || row[0];
     link.href = `regions/${targetCode}.html`;
     const image = document.createElement('img');
-    image.src = `assets/region-thumbnails/${targetCode}.jpg?v=shared-names1`;
+    image.src = `assets/region-thumbnails/${targetCode}.jpg?v=square-approved1`;
     image.alt = '';
-    image.width = 800;
-    image.height = 600;
+    image.width = 1200;
+    image.height = 1200;
     image.loading = 'lazy';
     const label = document.createElement('span');
     label.textContent = (sharedRegionLabels.has(row[1]) ? row[1] : (words.length ? row[3] : (shortNames[row[1]] || row[1]))) + ' ↗';

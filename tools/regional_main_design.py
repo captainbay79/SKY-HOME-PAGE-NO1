@@ -46,7 +46,7 @@ def apply_main_design(html, row):
     html = html.replace('href="../region.css"', 'href="../region.css?v=regional-main3"')
     html = html.replace('<script src="../region.js" defer></script>', '<script src="../region.js" defer></script><script src="../equipment.js?v=regional-main3" defer></script>')
     html = html.replace('?v=regional-main3', '?v=regional-refinement4')
-    return html.replace('styles.css?v=regional-refinement4', 'styles.css?v=hero-proof6')
+    return html.replace('styles.css?v=regional-refinement4', 'styles.css?v=square-approved1').replace('region.css?v=regional-refinement4', 'region.css?v=square-approved1')
 
 def update_existing():
     import json

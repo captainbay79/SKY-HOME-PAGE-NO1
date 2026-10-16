@@ -1,4 +1,4 @@
-"""Approved photo-preserving 4:3 thumbnail design with text/phone shadows."""
+"""Approved square thumbnail design with legacy lettering and photo-preserving layout."""
 from functools import lru_cache
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps
@@ -122,10 +122,55 @@ def region_text(label):
     layer.putalpha(layer.getchannel('A').filter(ImageFilter.MaxFilter(3)))
     return outlined_shadow(layer,2)
 
-def make_thumbnail(row,photo,path):
+def make_legacy_thumbnail(row,photo,path):
     graphic,letters,ulsan,shade=template()
     canvas=Image.alpha_composite(photograph(photo['file']),shade)
     canvas=Image.alpha_composite(canvas,graphic)
     canvas=Image.alpha_composite(canvas,letters)
     canvas=Image.alpha_composite(canvas,region_text(region_label(row)))
     canvas.convert('RGB').save(path,quality=78,optimize=True)
+
+@lru_cache(maxsize=1)
+def square_layers():
+    """Approved 1200px square: original typography, shifted badge and headline."""
+    graphic,letters,_,_=template()
+    def enlarge(layer):
+        return layer.resize((1200,1200),Image.Resampling.LANCZOS)
+    header=Image.new('RGBA',(800,800))
+    badge=graphic.crop((0,0,800,210))
+    ImageDraw.Draw(badge).rectangle((22,60,100,160),fill='#ff631f')
+    header.alpha_composite(badge,(20,4))
+    header.alpha_composite(graphic.crop((26,68,94,158)),(64,62))
+    header=enlarge(header)
+    shifted=Image.new('RGBA',(1200,1200))
+    shifted.alpha_composite(header,(24,18))
+    headline=Image.new('RGBA',(800,800))
+    headline.alpha_composite(letters.crop((0,180,800,460)),(0,255))
+    headline=enlarge(headline)
+    glyph=headline.crop(headline.getbbox())
+    glyph=glyph.resize((860,round(glyph.height*860/glyph.width)),Image.Resampling.LANCZOS)
+    shifted.alpha_composite(glyph,(56,378))
+    footer=Image.new('RGBA',(800,800))
+    footer.alpha_composite(graphic.crop((0,487,800,600)),(0,687))
+    footer.alpha_composite(letters.crop((0,487,800,600)),(0,687))
+    shifted=Image.alpha_composite(shifted,enlarge(footer))
+    shade=Image.new('RGBA',(1200,1200))
+    draw=ImageDraw.Draw(shade)
+    for x in range(1200):
+        draw.line((x,0,x,1200),fill=(8,15,20,round(255*(.8-.7*min(1,x/960)))))
+    return shifted,shade
+
+@lru_cache(maxsize=12)
+def square_photo(filename):
+    with Image.open(ROOT/filename) as source:
+        return ImageOps.fit(source.convert('RGBA'),(1200,1200),centering=(.5,.5))
+
+def make_thumbnail(row,photo,path):
+    layers,shade=square_layers()
+    canvas=Image.alpha_composite(square_photo(photo['file']),shade)
+    canvas=Image.alpha_composite(canvas,layers)
+    label=Image.new('RGBA',(800,800))
+    label.alpha_composite(region_text(region_label(row)),(20,4))
+    label=label.resize((1200,1200),Image.Resampling.LANCZOS)
+    canvas.alpha_composite(label,(24,18))
+    canvas.convert('RGB').save(path,quality=82,optimize=True)
